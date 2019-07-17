@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, {useContext, useEffect} from "react";
 
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -11,15 +11,29 @@ import purple from "@material-ui/core/colors/purple";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import Context from '../context';
+import axios from "axios";
+import config from "../config";
 
+import {GET_TOTAL_DISTANCE} from "../eventTypes";
 
 const Header = ({ classes }) => {
 
   const mobileSize = useMediaQuery('(max-width: 650px)');
 
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
 
   const { totalDistance } = state;
+
+  useEffect(() => { getTotalDistance(); }, [totalDistance]);
+
+  const getTotalDistance = async () => {
+    try {
+      const response =  await axios.get(`${config.BACKEND_URL}/totalDistance`);
+      dispatch({ type: GET_TOTAL_DISTANCE, payload: response.data.totalDistance});
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <div className={classes.root}>

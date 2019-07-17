@@ -2,6 +2,7 @@ import {
     FETCH_MEMBERS_REQUEST,
     FETCH_MEMBERS_FAILURE,
     FETCH_MEMBERS_SUCCESS,
+    GET_TOTAL_DISTANCE,
 } from './eventTypes';
 
 export default function reducer(state, { type, payload}) {
@@ -32,6 +33,12 @@ export default function reducer(state, { type, payload}) {
                 isLoading: false,
                 isLoaded: true,
                 loadingError: null,
+            };
+
+        case GET_TOTAL_DISTANCE:
+            return {
+                ...state,
+                totalDistance: payload,
             };
 
         default:
