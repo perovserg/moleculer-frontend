@@ -16,6 +16,15 @@ import config from "../config";
 
 import {GET_TOTAL_DISTANCE} from "../eventTypes";
 
+const getTotalDistance = async (dispatch) => {
+  try {
+    const response =  await axios.get(`${config.BACKEND_URL}/totalDistance`);
+    dispatch({ type: GET_TOTAL_DISTANCE, payload: response.data.totalDistance});
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 const Header = ({ classes }) => {
 
   const mobileSize = useMediaQuery('(max-width: 650px)');
@@ -24,16 +33,8 @@ const Header = ({ classes }) => {
 
   const { totalDistance } = state;
 
-  useEffect(() => { getTotalDistance(); }, [totalDistance]);
+  useEffect(() => { getTotalDistance(dispatch); }, [dispatch]);
 
-  const getTotalDistance = async () => {
-    try {
-      const response =  await axios.get(`${config.BACKEND_URL}/totalDistance`);
-      dispatch({ type: GET_TOTAL_DISTANCE, payload: response.data.totalDistance});
-    } catch (e) {
-      console.error(e);
-    }
-  };
 
   return (
     <div className={classes.root}>

@@ -21,6 +21,16 @@ import {
     FETCH_MEMBERS_SUCCESS,
 } from '../eventTypes';
 
+const getMembers = async (dispatch) => {
+    dispatch({ type: FETCH_MEMBERS_REQUEST });
+    try {
+        const response =  await axios.get(`${config.BACKEND_URL}/member/list`);
+        dispatch({ type: FETCH_MEMBERS_SUCCESS, payload: response.data});
+    } catch (e) {
+        dispatch({ type: FETCH_MEMBERS_FAILURE, payload: e});
+    }
+};
+
 const MemberList = ({ classes }) => {
 
     const mobileSize = useMediaQuery('(max-width: 650px)');
@@ -29,17 +39,8 @@ const MemberList = ({ classes }) => {
 
     const { members } = state;
 
-    useEffect(() => { getMembers(); }, []);
+    useEffect(() => { getMembers(dispatch); }, [dispatch]);
 
-    const getMembers = async () => {
-        dispatch({ type: FETCH_MEMBERS_REQUEST });
-        try {
-            const response =  await axios.get(`${config.BACKEND_URL}/member/list`);
-            dispatch({ type: FETCH_MEMBERS_SUCCESS, payload: response.data});
-        } catch (e) {
-            dispatch({ type: FETCH_MEMBERS_FAILURE, payload: e});
-        }
-    };
 
     const listItems = members.map(member => (
         <div key={member._id}>
