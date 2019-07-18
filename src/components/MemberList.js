@@ -1,13 +1,12 @@
 import React, { useEffect, useContext } from 'react';
 import axios from 'axios';
-import socketIOClient from "socket.io-client";
 
 import { withStyles } from "@material-ui/core/styles";
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import purple from '@material-ui/core/colors/purple';
 
-import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import Spinner from 'react-spinner-material';
 
@@ -21,8 +20,6 @@ import {
     FETCH_MEMBERS_FAILURE,
     FETCH_MEMBERS_SUCCESS,
 } from '../eventTypes';
-
-const socket = socketIOClient(config.BACKEND_URL);
 
 const getMembers = async (dispatch) => {
     dispatch({ type: FETCH_MEMBERS_REQUEST });
@@ -39,7 +36,7 @@ const MemberList = ({ classes }) => {
 
     const mobileSize = useMediaQuery('(max-width: 650px)');
 
-    const { state, dispatch } = useContext(Context);
+    const { state, dispatch, socket } = useContext(Context);
 
     const { members, isLoaded, isLoading } = state;
 

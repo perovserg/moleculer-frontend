@@ -1,5 +1,4 @@
 import React, {useContext, useEffect} from "react";
-import socketIOClient from "socket.io-client";
 
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -19,8 +18,6 @@ import config from "../config";
 
 import { GET_TOTAL_DISTANCE, OPEN_ADD_MEMBER_POPPER } from "../eventTypes";
 
-const socket = socketIOClient(config.BACKEND_URL);
-
 const getTotalDistance = async (dispatch) => {
   try {
     const response =  await axios.get(`${config.BACKEND_URL}/totalDistance`);
@@ -35,7 +32,7 @@ const Header = ({ classes }) => {
 
   const mobileSize = useMediaQuery('(max-width: 650px)');
 
-  const { state, dispatch } = useContext(Context);
+  const { state, dispatch, socket } = useContext(Context);
 
   const { totalDistance } = state;
 
@@ -107,7 +104,7 @@ const styles = theme => ({
     alignItems: "center"
   },
   icon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
     color: purple[400],
     fontSize: 45
   },

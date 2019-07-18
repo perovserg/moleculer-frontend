@@ -5,6 +5,8 @@ import {
     GET_TOTAL_DISTANCE,
     OPEN_ADD_MEMBER_POPPER,
     CLOSE_ADD_MEMBER_POPPER,
+    OPEN_ADD_DISTANCE_POPPER,
+    CLOSE_ADD_DISTANCE_POPPER,
 } from './eventTypes';
 
 export default function reducer(state, { type, payload}) {
@@ -57,6 +59,27 @@ export default function reducer(state, { type, payload}) {
             return {
                 ...state,
                 addMemberPopper: {
+                    open: false,
+                    anchorEl: null,
+                    placement: null,
+                },
+            };
+
+        case OPEN_ADD_DISTANCE_POPPER:
+            return {
+                ...state,
+                addDistancePopper: {
+                    open: true,
+                    anchorEl: payload.anchorEl,
+                    placement: payload.placement,
+                    memberId: payload.memberId,
+                },
+            };
+
+        case CLOSE_ADD_DISTANCE_POPPER:
+            return {
+                ...state,
+                addDistancePopper: {
                     open: false,
                     anchorEl: null,
                     placement: null,

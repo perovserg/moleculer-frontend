@@ -15,6 +15,7 @@ const appContext = createContext({
         open: false,
         anchorEl: null,
         placement: null,
+        memberId: null,
     },
 });
 
