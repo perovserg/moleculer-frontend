@@ -7,7 +7,7 @@ import withRoot from './withRoot';
 
 import Header from './components/Header';
 import MemberList from './components/MemberList';
-
+import AddMemberPopper from './components/AddMemberPopper';
 
 const App = () => {
 
@@ -19,6 +19,7 @@ const App = () => {
         <Context.Provider value={{state, dispatch}}>
             <Header/>
             <MemberList/>
+            <AddMemberPopper/>
         </Context.Provider>
     );
 };

@@ -6,7 +6,16 @@ const appContext = createContext({
     isLoading: false,
     isLoaded: false,
     loadingError: null,
-    currentMember: null,
+    addMemberPopper: {
+        open: false,
+        anchorEl: null,
+        placement: null,
+    },
+    addDistancePopper: {
+        open: false,
+        anchorEl: null,
+        placement: null,
+    },
 });
 
 export default appContext;

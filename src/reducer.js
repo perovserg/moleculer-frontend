@@ -3,6 +3,8 @@ import {
     FETCH_MEMBERS_FAILURE,
     FETCH_MEMBERS_SUCCESS,
     GET_TOTAL_DISTANCE,
+    OPEN_ADD_MEMBER_POPPER,
+    CLOSE_ADD_MEMBER_POPPER,
 } from './eventTypes';
 
 export default function reducer(state, { type, payload}) {
@@ -39,6 +41,26 @@ export default function reducer(state, { type, payload}) {
             return {
                 ...state,
                 totalDistance: payload,
+            };
+
+        case OPEN_ADD_MEMBER_POPPER:
+            return {
+                ...state,
+                addMemberPopper: {
+                    open: true,
+                    anchorEl: payload.anchorEl,
+                    placement: payload.placement,
+                },
+            };
+
+        case CLOSE_ADD_MEMBER_POPPER:
+            return {
+                ...state,
+                addMemberPopper: {
+                    open: false,
+                    anchorEl: null,
+                    placement: null,
+                },
             };
 
         default:

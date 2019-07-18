@@ -6,6 +6,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import PoolIcon from "@material-ui/icons/Pool";
 import FlagIcon from "@material-ui/icons/Flag";
 import Typography from "@material-ui/core/Typography";
+import Button from '@material-ui/core/Button';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import purple from "@material-ui/core/colors/purple";
 
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -14,14 +16,15 @@ import Context from '../context';
 import axios from "axios";
 import config from "../config";
 
-import {GET_TOTAL_DISTANCE} from "../eventTypes";
+import { GET_TOTAL_DISTANCE, OPEN_ADD_MEMBER_POPPER } from "../eventTypes";
 
 const getTotalDistance = async (dispatch) => {
   try {
     const response =  await axios.get(`${config.BACKEND_URL}/totalDistance`);
     dispatch({ type: GET_TOTAL_DISTANCE, payload: response.data.totalDistance});
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
+    if (error.response) console.log(`Error message: ${error.response.data}`);
   }
 };
 
@@ -35,6 +38,9 @@ const Header = ({ classes }) => {
 
   useEffect(() => { getTotalDistance(dispatch); }, [dispatch]);
 
+  const handleClickAddMemberButton = (e) => {
+    dispatch({ type: OPEN_ADD_MEMBER_POPPER, payload: {anchorEl: e.currentTarget, placement: 'bottom-end'}});
+  };
 
   return (
     <div className={classes.root}>
@@ -52,7 +58,6 @@ const Header = ({ classes }) => {
               Moleculer frontend
             </Typography>
           </div>
-
           <div className={classes.grow}>
             <FlagIcon className={classes.icon}/>
             <Typography
@@ -73,6 +78,13 @@ const Header = ({ classes }) => {
               {totalDistance}
             </Typography>
           </div>
+          <Button
+              variant="contained"
+              className={classes.button}
+              onClick={(e) => handleClickAddMemberButton(e)}
+          >
+            <PersonAddIcon className={classes.icon}/>
+          </Button>
         </Toolbar>
       </AppBar>
     </div>
@@ -95,6 +107,9 @@ const styles = theme => ({
   },
   mobile: {
     display: "none"
+  },
+  fab: {
+    margin: theme.spacing(1),
   },
 });
 
