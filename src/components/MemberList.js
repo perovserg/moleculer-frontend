@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import axios from 'axios';
+import socketIOClient from "socket.io-client";
 
 import { withStyles } from "@material-ui/core/styles";
 import List from '@material-ui/core/List';
@@ -21,6 +22,8 @@ import {
     FETCH_MEMBERS_SUCCESS,
 } from '../eventTypes';
 
+const socket = socketIOClient(config.BACKEND_URL);
+
 const getMembers = async (dispatch) => {
     dispatch({ type: FETCH_MEMBERS_REQUEST });
     try {
@@ -33,14 +36,18 @@ const getMembers = async (dispatch) => {
 
 const MemberList = ({ classes }) => {
 
+
     const mobileSize = useMediaQuery('(max-width: 650px)');
 
     const { state, dispatch } = useContext(Context);
 
-    const { members } = state;
+    const { members, isLoaded, isLoading } = state;
 
-    useEffect(() => { getMembers(dispatch); }, [dispatch]);
+    useEffect(() => {
+        if(isLoaded === false && isLoading === false) getMembers(dispatch);
+    }, [dispatch, isLoaded, isLoading]);
 
+    socket.on("UPDATE_MEMBER_LIST", () => getMembers(dispatch));
 
     const listItems = members.map(member => (
         <div key={member._id}>

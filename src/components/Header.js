@@ -1,4 +1,5 @@
 import React, {useContext, useEffect} from "react";
+import socketIOClient from "socket.io-client";
 
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -17,6 +18,8 @@ import axios from "axios";
 import config from "../config";
 
 import { GET_TOTAL_DISTANCE, OPEN_ADD_MEMBER_POPPER } from "../eventTypes";
+
+const socket = socketIOClient(config.BACKEND_URL);
 
 const getTotalDistance = async (dispatch) => {
   try {
@@ -37,6 +40,9 @@ const Header = ({ classes }) => {
   const { totalDistance } = state;
 
   useEffect(() => { getTotalDistance(dispatch); }, [dispatch]);
+
+  socket.on("UPDATE_MEMBER_LIST", () => getTotalDistance(dispatch));
+  socket.on("UPDATE_TOTAL_DISTANCE", () => getTotalDistance(dispatch));
 
   const handleClickAddMemberButton = (e) => {
     dispatch({ type: OPEN_ADD_MEMBER_POPPER, payload: {anchorEl: e.currentTarget, placement: 'bottom-end'}});
